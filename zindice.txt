@@ -1,0 +1,35 @@
+b_bishop = 1
+b_king = 2
+b_knight = 3
+b_pawn = 4
+b_queen = 5
+b_rook = 6
+w_bishop = 7
+w_king = 8
+w_knight = 9
+w_pawn = 10
+w_queen = 11
+w_rook = 12
+
+
+
+
+
+
+reawards:
+
+pas cliquer sur un pion -1
+cliquer sur un pion +2
+pas bouger pion -2
+bouger pion +12
+manger:
+   Pion = 80
+   Cavalier = 250
+   Fou = 250
+   Tour = 400
+   Dame = 800
+   roi = 10000
+
+
+
+
