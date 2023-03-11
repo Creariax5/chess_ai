@@ -40,6 +40,7 @@ def forward_propagation(input_table, network):
 
     # input to deep
     u = 0
+
     for i in range(network[7][1]):
         tmp = 0
         for j in range(network[7][0]):
