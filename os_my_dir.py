@@ -12,6 +12,7 @@ def create_directory(nb):
 
 
 def write_net(net, name):
+    print("writing")
     net = str(net)
     with open('my_gen/' + name + '.txt', 'w') as file:
         for l in net:
@@ -19,8 +20,8 @@ def write_net(net, name):
 
 
 def read_net():
+    print("reading")
     with open('my_gen/net3.txt', 'r') as f:
         net = f.read()
         net = ast.literal_eval(net)
-    print("read")
     return net

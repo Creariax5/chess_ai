@@ -1,5 +1,6 @@
 import threading
 import sys
+import time
 
 import pygame
 from ai import select_phase, move_phase, select_rnd, move_rnd
@@ -354,7 +355,6 @@ def main(WIN, WIDTH, w_network):
     while i != 5:
         pygame.time.delay(0)
         i += 1
-        print(i)
         # if event.type == pygame.MOUSEBUTTONDOWN:
         if ai:
             if not selected:
@@ -456,7 +456,7 @@ for gen in range(100):
 
     
 
-    '''for ijk in range(nb_ai - 1):
+    for ijk in range(nb_ai - 1):
         my_network = [mutate(last_gen_best, percentage), 0]
         my_network_list[ijk + 1] = my_network
         print(my_network_list[ijk + 1][0][0][0], "test 2")
@@ -464,7 +464,7 @@ for gen in range(100):
     print("__________________________")
     print(my_network_list[15][0][0][0], "test 3")
     print(my_network_list[5][0][0][0], "test 4")
-    print("__________________________")'''
+    print("__________________________")
 
     for rep in range(int(nb_ai)):
         board = [['  ' for i in range(8)] for j in range(8)]

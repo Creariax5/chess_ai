@@ -454,7 +454,4 @@ def play(network):
 
     create_board(board)
 
-    print(network[0][0][0])
-    print("rouuuuunddddd")
-
     return main(WIN, WIDTH, network)
