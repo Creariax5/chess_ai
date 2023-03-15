@@ -1,3 +1,3 @@
 # chess_ai
 
-run "auto_train.py" to test
+run "new/auto_train_multiTreading.py" to test
