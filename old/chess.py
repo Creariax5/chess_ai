@@ -15,20 +15,20 @@ class Piece:
 
 
 def create_board(board):
-    board[0] = [Piece('b', 'r', 5, 'b_rook.png'), Piece('b', 'kn', 11, 'b_knight.png'),
-                Piece('b', 'b', 7, 'b_bishop.png'),
-                Piece('b', 'q', 3, 'b_queen.png'), Piece('b', 'k', 9, 'b_king.png'), Piece('b', 'b', 7, 'b_bishop.png'),
-                Piece('b', 'kn', 11, 'b_knight.png'), Piece('b', 'r', 5, 'b_rook.png')]
+    board[0] = [Piece('b', 'r', 5, 'img/b_rook.png'), Piece('b', 'kn', 11, 'img/b_knight.png'),
+                Piece('b', 'b', 7, 'img/b_bishop.png'),
+                Piece('b', 'q', 3, 'img/b_queen.png'), Piece('b', 'k', 9, 'img/b_king.png'), Piece('b', 'b', 7, 'img/b_bishop.png'),
+                Piece('b', 'kn', 11, 'img/b_knight.png'), Piece('b', 'r', 5, 'img/b_rook.png')]
 
-    board[7] = [Piece('w', 'r', 6, 'w_rook.png'), Piece('w', 'kn', 12, 'w_knight.png'),
-                Piece('w', 'b', 8, 'w_bishop.png'),
-                Piece('w', 'q', 4, 'w_queen.png'), Piece('w', 'k', 10, 'w_king.png'),
-                Piece('w', 'b', 8, 'w_bishop.png'),
-                Piece('w', 'kn', 12, 'w_knight.png'), Piece('w', 'r', 6, 'w_rook.png')]
+    board[7] = [Piece('w', 'r', 6, 'img/w_rook.png'), Piece('w', 'kn', 12, 'img/w_knight.png'),
+                Piece('w', 'b', 8, 'img/w_bishop.png'),
+                Piece('w', 'q', 4, 'img/w_queen.png'), Piece('w', 'k', 10, 'img/w_king.png'),
+                Piece('w', 'b', 8, 'img/w_bishop.png'),
+                Piece('w', 'kn', 12, 'img/w_knight.png'), Piece('w', 'r', 6, 'img/w_rook.png')]
 
     for i in range(8):
-        board[1][i] = Piece('b', 'p', 1, 'b_pawn.png')
-        board[6][i] = Piece('w', 'p', 2, 'w_pawn.png')
+        board[1][i] = Piece('b', 'p', 1, 'img/b_pawn.png')
+        board[6][i] = Piece('w', 'p', 2, 'img/w_pawn.png')
     return board
 
 
@@ -452,18 +452,18 @@ for gen in range(nb_ai):
     for rep in range(int(nb_ai / 2)):
         board = [['  ' for i in range(8)] for j in range(8)]
 
-        bp = Piece('b', 'p', 1, 'b_pawn.png')
-        wp = Piece('w', 'p', 2, 'w_pawn.png')
-        bk = Piece('b', 'k', 3, 'b_queen.png')
-        wk = Piece('w', 'k', 4, 'w_queen.png')
-        br = Piece('b', 'r', 5, 'b_rook.png')
-        wr = Piece('w', 'r', 6, 'w_rook.png')
-        bb = Piece('b', 'b', 7, 'b_bishop.png')
-        wb = Piece('w', 'b', 8, 'w_bishop.png')
-        bq = Piece('b', 'q', 9, 'b_king.png')
-        wq = Piece('w', 'q', 10, 'w_king.png')
-        bkn = Piece('b', 'kn', 11, 'b_knight.png')
-        wkn = Piece('w', 'kn', 12, 'w_knight.png')
+        bp = Piece('b', 'p', 1, 'img/b_pawn.png')
+        wp = Piece('w', 'p', 2, 'img/w_pawn.png')
+        bk = Piece('b', 'k', 3, 'img/b_queen.png')
+        wk = Piece('w', 'k', 4, 'img/w_queen.png')
+        br = Piece('b', 'r', 5, 'img/b_rook.png')
+        wr = Piece('w', 'r', 6, 'img/w_rook.png')
+        bb = Piece('b', 'b', 7, 'img/b_bishop.png')
+        wb = Piece('w', 'b', 8, 'img/w_bishop.png')
+        bq = Piece('b', 'q', 9, 'img/b_king.png')
+        wq = Piece('w', 'q', 10, 'img/w_king.png')
+        bkn = Piece('b', 'kn', 11, 'img/b_knight.png')
+        wkn = Piece('w', 'kn', 12, 'img/w_knight.png')
 
         starting_order = {(0, 0): pygame.image.load(br.image), (1, 0): pygame.image.load(bkn.image),
                           (2, 0): pygame.image.load(bb.image), (3, 0): pygame.image.load(bk.image),
@@ -519,7 +519,7 @@ for gen in range(nb_ai):
             best = i
     print(best_score, best)
 
-    write_net(my_network_list[best][0])
+    write_net(my_network_list[best][0], "net4.0test")
     percentage = 0.5
 
     my_network = [read_net(), 0]

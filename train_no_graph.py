@@ -277,7 +277,7 @@ def play(network):
         grid = make_grid(8, WIDTH)
 
         i = 1
-        while i != 20:
+        while i != 5:
             i += 1
             # if event.type == pygame.MOUSEBUTTONDOWN:
             if ai:
