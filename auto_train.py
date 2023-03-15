@@ -1,4 +1,4 @@
-import random
+import threading
 import sys
 import time
 
@@ -355,7 +355,6 @@ def main(WIN, WIDTH, w_network):
     while i != 5:
         pygame.time.delay(0)
         i += 1
-        print(i)
         # if event.type == pygame.MOUSEBUTTONDOWN:
         if ai:
             if not selected:
@@ -454,6 +453,8 @@ for gen in range(100):
     last_gen_best = read_net()
 
     my_network_list[0] = [last_gen_best, 0]
+
+    
 
     for ijk in range(nb_ai - 1):
         my_network = [mutate(last_gen_best, percentage), 0]
