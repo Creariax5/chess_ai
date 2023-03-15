@@ -1,7 +1,11 @@
+import time
+
 from ai import select_phase, move_phase, select_rnd, move_rnd
 
 
 def play(network):
+    print("______________________test 824 ", network[0][0][0], " test 824______________________\n")
+    time.sleep(5)
     class Piece:
         def __init__(self, team, type, nb, image, killable=False):
             self.team = team
@@ -277,7 +281,7 @@ def play(network):
         grid = make_grid(8, WIDTH)
 
         i = 1
-        while i != 20:
+        while i != 5:
             i += 1
             # if event.type == pygame.MOUSEBUTTONDOWN:
             if ai:

@@ -353,7 +353,7 @@ def main(WIN, WIDTH, w_network):
 
     i = 1
     while i != 5:
-        pygame.time.delay(0)
+        pygame.time.delay(100)
         i += 1
         # if event.type == pygame.MOUSEBUTTONDOWN:
         if ai:
@@ -442,7 +442,7 @@ def main(WIN, WIDTH, w_network):
     return w_network[1]
 
 
-nb_ai = 20
+nb_ai = 5
 percentage = 0.5
 
 my_network_list = []
@@ -462,8 +462,8 @@ for gen in range(100):
         print(my_network_list[ijk + 1][0][0][0], "test 2")
         print(ijk + 1)
     print("__________________________")
-    print(my_network_list[15][0][0][0], "test 3")
-    print(my_network_list[5][0][0][0], "test 4")
+    print(my_network_list[3][0][0][0], "test 3")
+    print(my_network_list[4][0][0][0], "test 4")
     print("__________________________")
 
     for rep in range(int(nb_ai)):
