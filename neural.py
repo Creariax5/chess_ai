@@ -1,4 +1,5 @@
 import random
+import time
 
 import numpy as np
 from os_my_dir import write_net, read_net
@@ -115,7 +116,9 @@ def mutate(network, p):
         if -1 < network[4][i] + rnd < 1:
             network[4][i] = network[4][i] + rnd
             o += 1
-    print(o, " modifs")
+    # print(o, " modifs")
+    print("______________________test 42 ", network[0][0], " test 42______________________\n")
+    time.sleep(1)
 
     return network
 

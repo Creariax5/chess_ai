@@ -42,6 +42,7 @@ for gen in range(100):
         th_mutate[ijk] = CustomThread(target=mutate, args=(last_gen_best, percentage,))
     for ijk in range(nb_ai - 1):
         th_mutate[ijk].start()
+        time.sleep(0.1)
     for ijk in range(nb_ai - 1):
         mut = th_mutate[ijk].join()
         my_network = [mut, 0]
@@ -50,6 +51,7 @@ for gen in range(100):
 
     for rep in range(int(nb_ai)):
         th_list[rep].start()
+        time.sleep(0.1)
 
     best = 0
     best_score = 0
