@@ -1,8 +1,7 @@
+import copy
 import random
 import time
-
 import numpy as np
-from os_my_dir import write_net, read_net
 
 
 def init(ent, dep, out):
@@ -106,21 +105,21 @@ def mutate(network, p):
     for i in range(dep):
         for j in range(dep):
             rnd = random.uniform(-p, p)
-            if -1 < network[3][i][j] + rnd < 1:
-                network[3][i][j] = network[3][i][j] + rnd
-                o += 1
+            # if -1 < network[3][i][j] + rnd < 1:
+            network[3][i][j] = network[3][i][j] + rnd
+            o += 1
 
     # b_output_table
     for i in range(out):
         rnd = random.uniform(-p, p)
-        if -1 < network[4][i] + rnd < 1:
-            network[4][i] = network[4][i] + rnd
-            o += 1
+        # if -1 < network[4][i] + rnd < 1:
+        network[4][i] = network[4][i] + rnd
+        o += 1
     # print(o, " modifs")
     print("______________________test 42 ", network[0][0], " test 42______________________\n")
     time.sleep(1)
 
-    return network
+    return copy.deepcopy(network)
 
 
 def select(dat, net):

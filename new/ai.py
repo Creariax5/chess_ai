@@ -66,4 +66,3 @@ def move_rnd():
     x = random.randint(0, 7)
     y = random.randint(0, 7)
     return x, y
-
