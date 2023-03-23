@@ -115,10 +115,60 @@ def mutate(network, p):
         if -1 < network[4][i] + rnd < 1:
             network[4][i] = network[4][i] + rnd
             o += 1
-    # print(o, " modifs")
     print(network[0][0])
-    # print("______________________test MUTED ", network[0][0], " test MUTED______________________\n")
 
+    return copy.deepcopy(network)
+
+
+def mutate_v2(network, p):
+    ent, dep, out = network[7][0], network[7][1], network[7][2]
+    o = 0
+
+    network = copy.deepcopy(network)
+
+    # w_input_table
+    for i in range(ent * dep):
+        rnd = random.uniform(0, 1)
+        if rnd <= p:
+            network[0][i] = random.uniform(-1, 1)
+            o += 1
+
+    # w_table
+    for i in range(dep):
+        for j in range(dep * dep):
+            rnd = random.uniform(0, 1)
+            if rnd <= p:
+                network[1][i][j] = random.uniform(-1, 1)
+                o += 1
+
+    # w_output_table
+    for i in range(out * dep):
+        rnd = random.uniform(0, 1)
+        if rnd <= p:
+            network[2][i] = random.uniform(-1, 1)
+            o += 1
+
+    # b_table
+    for i in range(dep):
+        for j in range(dep):
+            rnd = random.uniform(0, 1)
+            if rnd <= p:
+                network[3][i][j] = random.uniform(-1, 1)
+                o += 1
+
+    # b_output_table
+    for i in range(out):
+        rnd = random.uniform(0, 1)
+        if rnd <= p:
+            network[4][i] = random.uniform(-1, 1)
+            o += 1
+    # print(network[0][0])
+
+    return copy.deepcopy(network)
+
+
+def genetic(network1, network2, p):
+    network = network1
     return copy.deepcopy(network)
 
 

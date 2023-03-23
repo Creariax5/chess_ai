@@ -21,7 +21,7 @@ def write_net(net, name):
 
 def read_net():
     print("reading")
-    with open('my_gen/net5.0test.txt', 'r') as f:
+    with open('my_gen/net3.txt', 'r') as f:
         net = f.read()
         net = ast.literal_eval(net)
     return net

@@ -3,7 +3,6 @@ from ai import select_phase, move_phase, select_rnd, move_rnd
 
 
 def play(network):
-    # print("______________________ test GO_PLAY ", network[0][0][0], " test GO_PLAY ______________________\n")
     time.sleep(0)
     class Piece:
         def __init__(self, team, type, nb, image, killable=False):
@@ -48,14 +47,137 @@ def play(network):
         return output
 
     def convert_to_ai(board):
-        output = []
+        my_input = []
 
-        for i in board:
-            for j in i:
+        for i in range(14):
+            my_input.append([])
+            for j in range(8):
+                my_input[i].append([])
+                for k in range(8):
+                    my_input[i][j].append(0)
+
+        #w_pawn
+        for i in range(8):
+            for j in range(8):
                 try:
-                    output.append(j.nb)
+                    if board[i][j].nb == 2:
+                        my_input[0][i][j] = 1
                 except:
-                    output.append(0)
+                    my_input[0][i][j] = 0
+        # w_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 4:
+                        my_input[1][i][j] = 1
+                except:
+                    my_input[1][i][j] = 0
+        # w_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 6:
+                        my_input[2][i][j] = 1
+                except:
+                    my_input[2][i][j] = 0
+        # w_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 8:
+                        my_input[3][i][j] = 1
+                except:
+                    my_input[3][i][j] = 0
+        # w_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 10:
+                        my_input[4][i][j] = 1
+                except:
+                    my_input[4][i][j] = 0
+        # w_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 12:
+                        my_input[5][i][j] = 1
+                except:
+                    my_input[5][i][j] = 0
+
+        # b_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 1:
+                        my_input[6][i][j] = 1
+                except:
+                    my_input[6][i][j] = 0
+        # b_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 3:
+                        my_input[7][i][j] = 1
+                except:
+                    my_input[7][i][j] = 0
+        # b_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 5:
+                        my_input[8][i][j] = 1
+                except:
+                    my_input[8][i][j] = 0
+        # b_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 7:
+                        my_input[9][i][j] = 1
+                except:
+                    my_input[9][i][j] = 0
+        # b_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 9:
+                        my_input[10][i][j] = 1
+                except:
+                    my_input[10][i][j] = 0
+        # b_pawn
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if board[i][j].nb == 11:
+                        my_input[11][i][j] = 1
+                except:
+                    my_input[11][i][j] = 0
+
+        # w
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if (board[i][j].nb % 2) == 0:
+                        my_input[12][i][j] = 1
+                except:
+                    my_input[12][i][j] = 0
+        # b
+        for i in range(8):
+            for j in range(8):
+                try:
+                    if (board[i][j].nb % 2) != 0:
+                        my_input[13][i][j] = 1
+                except:
+                    my_input[13][i][j] = 0
+
+        o = 0
+        output = []
+        for i in range(14):
+            for j in range(8):
+                for k in range(8):
+                    output.append(my_input[i][j][k])
+
         return output
 
     def deselect():
@@ -284,9 +406,11 @@ def play(network):
             i += 1
             # if event.type == pygame.MOUSEBUTTONDOWN:
             if ai:
+                x_next, y_next = 0, 0
                 if not selected:
                     if moves % 2 == 0:
-                        y, x = select_phase(convert_to_ai(board), w_network[0], 0)
+                        y, x, x_next, y_next = select_phase(convert_to_ai(board), w_network[0])
+                        # print(y, x, x_next, y_next)
                     else:
                         y, x = select_rnd()
                     try:
@@ -298,20 +422,21 @@ def play(network):
                         selected = True
                         if moves % 2 == 0:
                             w_network[1] += 3
+                            print("selected")
                         # else:
                         # b_network[1] += 3
                     except:
                         piece_to_move = []
-                        print('Can\'t select')
                         if moves % 2 == 0:
                             w_network[1] += -1
+                            print('Can\'t select')
                         # else:
                         # b_network[1] += -1
                     # print(piece_to_move)
 
                 else:
                     if moves % 2 == 0:
-                        y, x = move_phase(convert_to_ai(board), w_network[0], 0)
+                        y, x = x_next, y_next
                     else:
                         y, x = move_rnd()
                     try:
@@ -325,15 +450,16 @@ def play(network):
                             moves += 1
                             if moves % 2 == 0:
                                 w_network[1] += 12
+                                print("moved")
                             # else:
                             # b_network[1] += 12
                         else:
                             deselect()
                             remove_highlight(grid)
                             selected = False
-                            print("Deselected")
                             if moves % 2 == 0:
                                 w_network[1] += -2
+                                # print("Deselected")
                             # else:
                             # b_network[1] += -2
                     except:
@@ -347,15 +473,16 @@ def play(network):
                             moves += 1
                             if moves % 2 == 0:
                                 w_network[1] += 12
+                                print("moved")
                             # else:
                             # b_network[1] += 12
                         else:
                             deselect()
                             remove_highlight(grid)
                             selected = False
-                            print("Invalid move")
                             if moves % 2 == 0:
                                 w_network[1] += -2
+                                print("Invalid move")
                             # else:
                             # b_network[1] += -2
                     selected = False

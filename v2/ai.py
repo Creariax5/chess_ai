@@ -1,16 +1,20 @@
+import time
+
 from neural import select
 import random
 
 
-def select_phase(dat, net, b):
+def select_phase(dat, net):
     x = 0
     y = 0
-
     xa = 0
     ya = 0
 
-    dat.append(0)
-    dat.append(b)
+    x_next = 0
+    y_next = 0
+    xa_next = 0
+    ya_next = 0
+
     rep = select(dat, net)
 
     for i in range(8):
@@ -20,13 +24,28 @@ def select_phase(dat, net, b):
 
     for i in range(8):
         if y < rep[i + 8]:
-            y = rep[i]
+            y = rep[i + 8]
             ya = i
+
+    for i in range(8):
+        if x_next < rep[i + 8*2]:
+            x_next = rep[i + 8*2]
+            xa_next = i
+
+    for i in range(8):
+        if y_next < rep[i + 8*3]:
+            y_next = rep[i + 8*3]
+            ya_next = i
 
     x = xa
     y = ya
+    x_next = xa_next
+    y_next = ya_next
 
-    return x, y
+    u = str(y) + str(y_next)
+    print(u)
+
+    return x, y, x_next, y_next
 
 
 def move_phase(dat, net, b):
