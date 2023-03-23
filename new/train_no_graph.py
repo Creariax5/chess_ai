@@ -3,8 +3,8 @@ from ai import select_phase, move_phase, select_rnd, move_rnd
 
 
 def play(network):
-    print("______________________test 824 ", network[0][0][0], " test 824______________________\n")
-    time.sleep(3)
+    # print("______________________ test GO_PLAY ", network[0][0][0], " test GO_PLAY ______________________\n")
+    time.sleep(0)
     class Piece:
         def __init__(self, team, type, nb, image, killable=False):
             self.team = team

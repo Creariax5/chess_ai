@@ -1,4 +1,4 @@
-from thread import Thread
+from old.thread import Thread
 
 
 class CustomThread(Thread):

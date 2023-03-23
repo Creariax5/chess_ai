@@ -6,7 +6,7 @@ from neural import init, mutate
 from os_my_dir import write_net, read_net
 
 nb_ai = 20
-percentage = 0.2
+percentage = 0.1
 
 for gen in range(10000):
     th_list = []
@@ -20,7 +20,7 @@ for gen in range(10000):
         th_mutate.append(CustomThread(target=mutate, args=(last_gen_best, percentage,)))
     for ijk in range(nb_ai):
         th_mutate[ijk].start()
-        time.sleep(0.1)
+        time.sleep(0.15)
 
     # take network given by mutate and pass it to play
     for ijk in range(nb_ai):
@@ -30,7 +30,7 @@ for gen in range(10000):
         print(ijk)
     for rep in range(int(nb_ai)):
         th_list[rep].start()
-        time.sleep(0.1)
+        time.sleep(0)
 
     # find best network of this generation and save it
     best = 0
@@ -40,21 +40,24 @@ for gen in range(10000):
         net = th_list[i].join()
         n = net[0]
         sc = net[1]
-        print(n[0][0], "from thread")
-        print(sc, "from thread")
+        # print(n[0][0], "from thread")
+        # print(sc, "from thread")
         if sc > best_score:
             best_score = sc
             best = n
-            print("yes")
-    print(best_score)
+            # print("yes")
+        if sc > 4:
+            write_net(n, "net_of_win")
+    # print(best_score)
 
-    time.sleep(1)
-    write_net(best, "net3")
-    print("gen :", gen)
+    print("")
     print("                               °\ /°")
     print("                              -(@ @)-")
     print("┌──────────────────────────oOO──(_)──OOo──────────────────────────┐")
     print("|                                                                 |")
-    print("|                          gen :", gen, "                             |")
+    print("|                          gen :", gen, "                              |")
+    print("|                    last best :", best_score, "                              |")
     print("|                                                                 |")
     print("└─────────────────────────────────────────────────────────────────┘")
+    time.sleep(1)
+    write_net(best, "net3")
