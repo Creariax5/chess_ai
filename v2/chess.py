@@ -441,11 +441,12 @@ def main(WIN, WIDTH, b_network, w_network):
     return b_network[1], w_network[1]
 
 
-nb_ai = 2
+nb_ai = 1
 
 my_network_list = []
 for i in range(nb_ai):
-    my_network = [init(896, 64, 32), 0]
+    my_network = [init(896, 64, 1), 0]
+    write_net(my_network, "net1out")
     my_network_list.append(my_network)
 
 for gen in range(nb_ai):
@@ -519,7 +520,7 @@ for gen in range(nb_ai):
             best = i
     print(best_score, best)
 
-    write_net(my_network_list[best][0], "net3")
+    write_net(my_network_list[best][0], "net1out")
     percentage = 0.5
 
     my_network = [read_net(), 0]

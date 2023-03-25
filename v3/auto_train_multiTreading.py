@@ -5,7 +5,7 @@ from train_no_graph import play
 from neural import init, mutate, mutate_v2
 from os_my_dir import write_net, read_net
 
-nb_ai = 50
+nb_ai = 1
 percentage = 0.3
 
 for gen in range(10000):
@@ -21,7 +21,6 @@ for gen in range(10000):
     for ijk in tqdm(range(nb_ai)):
         th_mutate[ijk].start()
         time.sleep(0.15)
-
     # take network given by mutate and pass it to play
     for ijk in tqdm(range(nb_ai)):
         mut = th_mutate[ijk].join()
@@ -58,4 +57,4 @@ for gen in range(10000):
     print("|                                                                 |")
     print("└─────────────────────────────────────────────────────────────────┘")
     time.sleep(1)
-    write_net(best, "net3")
+    # write_net(best, "net3")

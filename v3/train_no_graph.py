@@ -1,9 +1,11 @@
+import copy
 import time
 from ai import select_phase, move_phase, select_rnd, move_rnd
 
 
 def play(network):
     time.sleep(0)
+
     class Piece:
         def __init__(self, team, type, nb, image, killable=False):
             self.team = team
@@ -56,7 +58,7 @@ def play(network):
                 for k in range(8):
                     my_input[i][j].append(0)
 
-        #w_pawn
+        # w_pawn
         for i in range(8):
             for j in range(8):
                 try:
@@ -179,6 +181,20 @@ def play(network):
                     output.append(my_input[i][j][k])
 
         return output
+
+
+    def my_deselect(my_board):
+        for row in range(len(my_board)):
+            for column in range(len(my_board[0])):
+                if my_board[row][column] == 'x ':
+                    board[row][column] = '  '
+                else:
+                    try:
+                        my_board[row][column].killable = False
+                    except:
+                        pass
+        return convert_to_readable(my_board)
+
 
     def deselect():
         for row in range(len(board)):
@@ -394,6 +410,49 @@ def play(network):
                     grid[i][j].colour = GREY
         return grid
 
+    def test_possibility(grid, moves):
+        possibility_table = []
+        for x1 in range(8):
+            for y1 in range(8):
+                my_grid = copy.deepcopy(grid)
+                my_board = copy.deepcopy(board)
+                try:
+                    possible = select_moves((my_board[x1][y1]), (x1, y1), moves)
+                    for positions in possible:
+                        row, col = positions
+                        my_grid[row][col].colour = BLUE
+                    piece_to_move = x1, y1
+                    for x2 in range(8):
+                        for y2 in range(8):
+                            try:
+                                if my_board[x2][y2].killable:
+                                    row, col = piece_to_move  # coords of original piece
+                                    my_board[x2][y2] = my_board[row][col]
+                                    my_board[row][col] = '  '
+                                    my_deselect(my_board)
+                                    remove_highlight(my_grid)
+                                    Do_Move((col, row), (y2, x2))
+                                    possibility_table.append([[my_board], [x1, y1, x2, y2]])
+                                else:
+                                    my_deselect(my_board)
+                                    remove_highlight(my_grid)
+                            except:
+                                if my_board[x2][y2] == 'x ':
+                                    row, col = piece_to_move
+                                    my_board[x2][y2] = my_board[row][col]
+                                    my_board[row][col] = '  '
+                                    my_deselect(my_board)
+                                    remove_highlight(my_grid)
+                                    Do_Move((col, row), (y2, x2))
+                                    possibility_table.append([my_board, [x1, y1, x2, y2]])
+                                else:
+                                    my_deselect(my_board)
+                                    remove_highlight(my_grid)
+                except:
+                    pass
+        print(len(possibility_table), "len(possibility_table)")
+        return possibility_table
+
     def main(WIDTH, w_network):
         ai = True
         moves = 0
@@ -409,7 +468,19 @@ def play(network):
                 x_next, y_next = 0, 0
                 if not selected:
                     if moves % 2 == 0:
-                        y, x, x_next, y_next = select_phase(convert_to_ai(board), w_network[0])
+                        possibility = test_possibility(grid, moves)
+                        score_list = []
+                        for i in range(len(possibility)):
+                            score_list.append([select_phase(convert_to_ai(possibility[i][0]), w_network[0]), possibility[i][1]])
+                        score = 0
+                        score_index = 0
+                        for i in range(len(score_list)):
+                            print(score_list[i][0][0], score)
+                            if score_list[i][0][0] > score:
+                                score = score_list[i][0][0]
+                                score_index = i
+                        print(score_list[score_index][1])
+                        y, x, x_next, y_next = score_list[score_index][1]
                         # y, x = 3, 6
                         # print(y, x, x_next, y_next)
                     else:
