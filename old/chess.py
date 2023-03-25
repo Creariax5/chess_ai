@@ -519,7 +519,7 @@ for gen in range(nb_ai):
             best = i
     print(best_score, best)
 
-    write_net(my_network_list[best][0], "net4.0test")
+    write_net(my_network_list[best][0], "net5.0test")
     percentage = 0.5
 
     my_network = [read_net(), 0]

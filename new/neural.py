@@ -1,8 +1,7 @@
+import copy
 import random
 import time
-
 import numpy as np
-from os_my_dir import write_net, read_net
 
 
 def init(ent, dep, out):
@@ -117,10 +116,10 @@ def mutate(network, p):
             network[4][i] = network[4][i] + rnd
             o += 1
     # print(o, " modifs")
-    print("______________________test 42 ", network[0][0], " test 42______________________\n")
-    time.sleep(1)
+    print(network[0][0])
+    # print("______________________test MUTED ", network[0][0], " test MUTED______________________\n")
 
-    return network
+    return copy.deepcopy(network)
 
 
 def select(dat, net):
