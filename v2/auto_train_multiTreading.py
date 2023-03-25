@@ -5,8 +5,8 @@ from train_no_graph import play
 from neural import init, mutate, mutate_v2
 from os_my_dir import write_net, read_net
 
-nb_ai = 30
-percentage = 0.1
+nb_ai = 20
+percentage = 0.2
 
 for gen in range(10000):
     th_list = []
