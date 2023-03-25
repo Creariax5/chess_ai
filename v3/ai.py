@@ -1,3 +1,4 @@
+import copy
 import time
 
 from neural import select
@@ -6,7 +7,7 @@ import random
 
 def select_phase(dat, net):
     score = select(dat, net)
-    return score
+    return copy.deepcopy(score)
 
 
 def move_phase(dat, net, b):

@@ -174,4 +174,4 @@ def genetic(network1, network2, p):
 
 def select(dat, net):
     rep = forward_propagation(dat, net)
-    return rep
+    return copy.deepcopy(rep)

@@ -180,7 +180,7 @@ def play(network):
                 for k in range(8):
                     output.append(my_input[i][j][k])
 
-        return output
+        return copy.deepcopy(output)
 
 
     def my_deselect(my_board):
@@ -411,11 +411,14 @@ def play(network):
         return grid
 
     def test_possibility(grid, moves):
+        # print("grid: ", convert_to_ai(grid))
+
         possibility_table = []
         for x1 in range(8):
             for y1 in range(8):
                 my_grid = copy.deepcopy(grid)
                 my_board = copy.deepcopy(board)
+                # print("my_board: ", convert_to_ai(my_board))
                 try:
                     possible = select_moves((my_board[x1][y1]), (x1, y1), moves)
                     for positions in possible:
@@ -432,7 +435,9 @@ def play(network):
                                     my_deselect(my_board)
                                     remove_highlight(my_grid)
                                     Do_Move((col, row), (y2, x2))
-                                    possibility_table.append([[my_board], [x1, y1, x2, y2]])
+                                    tab = copy.deepcopy([[my_board], [x1, y1, x2, y2]])
+                                    possibility_table.append(tab)
+                                    print("tab: ", convert_to_ai(tab))
                                 else:
                                     my_deselect(my_board)
                                     remove_highlight(my_grid)
@@ -444,7 +449,9 @@ def play(network):
                                     my_deselect(my_board)
                                     remove_highlight(my_grid)
                                     Do_Move((col, row), (y2, x2))
-                                    possibility_table.append([my_board, [x1, y1, x2, y2]])
+                                    tab = copy.deepcopy([[convert_to_ai(my_board)], [x1, y1, x2, y2]])
+                                    possibility_table.append(tab)
+                                    print("tab: ", tab)
                                 else:
                                     my_deselect(my_board)
                                     remove_highlight(my_grid)
@@ -468,19 +475,28 @@ def play(network):
                 x_next, y_next = 0, 0
                 if not selected:
                     if moves % 2 == 0:
+                        # all the possibility for 1 move in possibility
                         possibility = test_possibility(grid, moves)
                         score_list = []
+
+                        # [score returned by forward_propagation, coordinate to this move] append to score_list
                         for i in range(len(possibility)):
-                            score_list.append([select_phase(convert_to_ai(possibility[i][0]), w_network[0]), possibility[i][1]])
-                        score = 0
+                            print(convert_to_ai(possibility[i][0]))
+                            print(select_phase(convert_to_ai(possibility[i][0]), w_network[0]))
+                            score_tab = copy.deepcopy([select_phase(convert_to_ai(possibility[i][0]), w_network[0]), possibility[i][1]])
+                            score_list.append(copy.deepcopy(score_tab))
+
+                        # in best_score the best score and in score_index the index to get his score_list
+                        best_score = 0
                         score_index = 0
                         for i in range(len(score_list)):
-                            print(score_list[i][0][0], score)
-                            if score_list[i][0][0] > score:
-                                score = score_list[i][0][0]
+                            sl = score_list[i][0][0]
+                            print(sl, best_score)
+                            if sl > best_score:
+                                best_score = sl
                                 score_index = i
                         print(score_list[score_index][1])
-                        y, x, x_next, y_next = score_list[score_index][1]
+                        y, x, y_next, x_next = score_list[score_index][1]
                         # y, x = 3, 6
                         # print(y, x, x_next, y_next)
                     else:
