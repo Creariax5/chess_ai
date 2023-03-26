@@ -6,21 +6,21 @@ import numpy as np
 
 def init(ent, dep, out):
 
-    w_input_table = np.random.uniform(-1, 1, ent * dep).tolist()
+    w_input_table = np.random.uniform(0, 1, ent * dep).tolist()
     w_table = []
-    w_output_table = np.random.uniform(-1, 1, out * dep).tolist()
+    w_output_table = np.random.uniform(0, 1, out * dep).tolist()
 
     b_table = []
-    b_output_table = np.random.uniform(-1, 1, out).tolist()
+    b_output_table = np.random.uniform(0, 1, out).tolist()
 
     f_table = []
     output_table = np.zeros(out).tolist()
 
     for i in range(dep):
-        w_table.append(np.random.uniform(-1, 1, dep * dep).tolist())
+        w_table.append(np.random.uniform(0, 1, dep * dep).tolist())
 
     for i in range(dep):
-        b_table.append(np.random.uniform(-1, 1, dep).tolist())
+        b_table.append(np.random.uniform(0, 1, dep).tolist())
 
     for i in range(dep):
         f_table.append(np.zeros(dep).tolist())
@@ -35,6 +35,7 @@ def init(ent, dep, out):
 
 
 def forward_propagation(input_table, network):
+    print("input_table: ", input_table)
     def sig(x):
         return 1 / (1 + np.exp(-x))
 
@@ -71,8 +72,9 @@ def forward_propagation(input_table, network):
         network[6][i] = sig(tmp)
 
     output_table = network[6]
+    print(output_table)
 
-    return output_table
+    return copy.deepcopy(output_table)
 
 
 def mutate(network, p):

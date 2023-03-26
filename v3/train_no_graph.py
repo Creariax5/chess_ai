@@ -411,14 +411,11 @@ def play(network):
         return grid
 
     def test_possibility(grid, moves):
-        # print("grid: ", convert_to_ai(grid))
-
         possibility_table = []
         for x1 in range(8):
             for y1 in range(8):
                 my_grid = copy.deepcopy(grid)
                 my_board = copy.deepcopy(board)
-                # print("my_board: ", convert_to_ai(my_board))
                 try:
                     possible = select_moves((my_board[x1][y1]), (x1, y1), moves)
                     for positions in possible:
@@ -437,7 +434,7 @@ def play(network):
                                     Do_Move((col, row), (y2, x2))
                                     tab = copy.deepcopy([[my_board], [x1, y1, x2, y2]])
                                     possibility_table.append(tab)
-                                    print("tab: ", convert_to_ai(tab))
+                                    # print("tab: ", convert_to_ai(tab))
                                 else:
                                     my_deselect(my_board)
                                     remove_highlight(my_grid)
@@ -451,7 +448,7 @@ def play(network):
                                     Do_Move((col, row), (y2, x2))
                                     tab = copy.deepcopy([[convert_to_ai(my_board)], [x1, y1, x2, y2]])
                                     possibility_table.append(tab)
-                                    print("tab: ", tab)
+                                    # print("tab: ", tab)
                                 else:
                                     my_deselect(my_board)
                                     remove_highlight(my_grid)
@@ -481,9 +478,8 @@ def play(network):
 
                         # [score returned by forward_propagation, coordinate to this move] append to score_list
                         for i in range(len(possibility)):
-                            print(convert_to_ai(possibility[i][0]))
-                            print(select_phase(convert_to_ai(possibility[i][0]), w_network[0]))
-                            score_tab = copy.deepcopy([select_phase(convert_to_ai(possibility[i][0]), w_network[0]), possibility[i][1]])
+                            print(possibility[i][0][0])
+                            score_tab = copy.deepcopy([select_phase(possibility[i][0][0], w_network[0]), possibility[i][1]])
                             score_list.append(copy.deepcopy(score_tab))
 
                         # in best_score the best score and in score_index the index to get his score_list

@@ -6,7 +6,7 @@ from neural import init, mutate, mutate_v2
 from os_my_dir import write_net, read_net
 
 nb_ai = 1
-percentage = 0.3
+percentage = 1
 
 for gen in range(10000):
     th_list = []
