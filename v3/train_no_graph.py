@@ -448,10 +448,10 @@ def play(network):
         selected = False
         piece_to_move = []
         grid = make_grid(8, WIDTH)
-        i = 1
-        while i != 5:
-            i += 1
+        io = 1
+        while io != 40:
             if ai:
+                io += 1
                 if not selected:
                     if moves % 2 == 0:
                         # all the possibility for 1 move in possibility
@@ -473,10 +473,8 @@ def play(network):
                             if sl > best_score:
                                 best_score = sl
                                 score_index = i
-                        print(score_list[score_index][1])
+                        # print(score_list[score_index][1])
                         x, y, x_next, y_next = score_list[score_index][1]
-                        if moves % 2 == 0:
-                            print(convert_to_readable(board))
                     else:
                         y, x = select_rnd()
                     try:
@@ -488,7 +486,7 @@ def play(network):
                         selected = True
                         if moves % 2 == 0:
                             w_network[1] += 3
-                            print("selected")
+                            # print("selected")
                         # else:
                         # b_network[1] += 3
                     except:
@@ -498,8 +496,6 @@ def play(network):
                             print('Can\'t select')
                         # else:
                         # b_network[1] += -1
-                    if moves % 2 == 0:
-                        print(convert_to_readable(board))
                 else:
                     if moves % 2 == 0:
                         # y, x = 3, 5
@@ -517,12 +513,12 @@ def play(network):
                             Do_Move((col, row), (y, x))
                             if moves % 2 == 0:
                                 w_network[1] += 12
-                                print("moved")
+                                # print("moved")
                             moves += 1
                             # else:
                             # b_network[1] += 12
-                            if moves % 2 == 0:
-                                print(convert_to_readable(board))
+                            # if moves % 2 == 0:
+                                # print(convert_to_readable(board))
                         else:
                             deselect()
                             remove_highlight(grid)
@@ -542,12 +538,10 @@ def play(network):
                             Do_Move((col, row), (y, x))
                             if moves % 2 == 0:
                                 w_network[1] += 12
-                                print("moved")
+                                # print("moved")
                             moves += 1
                             # else:
                             # b_network[1] += 12
-                            if moves % 2 == 0:
-                                print(convert_to_readable(board))
                         else:
                             deselect()
                             remove_highlight(grid)

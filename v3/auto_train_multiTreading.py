@@ -5,8 +5,8 @@ from train_no_graph import play
 from neural import init, mutate, mutate_v2
 from os_my_dir import write_net, read_net
 
-nb_ai = 1
-percentage = 1
+nb_ai = 20
+percentage = 0.2
 
 for gen in range(10000):
     th_list = []
@@ -17,7 +17,7 @@ for gen in range(10000):
 
     # take last_gen_best and pass it to mutate
     for ijk in tqdm(range(nb_ai)):
-        th_mutate.append(CustomThread(target=mutate_v2, args=(last_gen_best, percentage,)))
+        th_mutate.append(CustomThread(target=mutate, args=(last_gen_best, percentage,)))
     for ijk in tqdm(range(nb_ai)):
         th_mutate[ijk].start()
         time.sleep(0.15)
@@ -27,7 +27,6 @@ for gen in range(10000):
         my_network = [mut, 0]
         th_list.append(CustomThread(target=play, args=(my_network,)))
         time.sleep(0)
-        print(ijk)
     for rep in tqdm(range(int(nb_ai))):
         th_list[rep].start()
         time.sleep(0)
@@ -40,11 +39,10 @@ for gen in range(10000):
         net = th_list[i].join()
         n = net[0]
         sc = net[1]
+        print(sc)
         if sc > best_score:
             best_score = sc
             best = n
-    if sc > 4:
-        write_net(n, "net_of_win")
     # print(best_score)
 
     print("")
@@ -57,4 +55,4 @@ for gen in range(10000):
     print("|                                                                 |")
     print("└─────────────────────────────────────────────────────────────────┘")
     time.sleep(1)
-    # write_net(best, "net3")
+    write_net(best, "net3")

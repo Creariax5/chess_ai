@@ -445,7 +445,7 @@ nb_ai = 1
 
 my_network_list = []
 for i in range(nb_ai):
-    my_network = [init(896, 1, 1), 0]
+    my_network = [init(896, 64, 1), 0]
     write_net(my_network, "net1out")
     my_network_list.append(my_network)
 

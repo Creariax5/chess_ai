@@ -117,7 +117,7 @@ def mutate(network, p):
         if -1 < network[4][i] + rnd < 1:
             network[4][i] = network[4][i] + rnd
             o += 1
-    print(network[0][0])
+    # print(network[0][0])
 
     return copy.deepcopy(network)
 
