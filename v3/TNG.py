@@ -410,36 +410,47 @@ def play(network):
                     grid[i][j].colour = GREY
         return grid
 
-    def test_possibility(moves, my_board):
-        def up(y, x):
-            if y < 7:
-                y += 1
-            else:
-                y = 0
-                x += 1
-            return y, x
-
-        piece_to_move = []
+    def test_possibility(moves, board):
         possibility_table = []
+        for y1 in range(8):
+            for x1 in range(8):
+                my_board = copy.deepcopy(board)
+                try:
+                    piece_to_move = x1, y1
+                    possible = select_moves((my_board[x1][y1]), (x1, y1), moves)
+                    oklm = 0
+                    for positions in possible:
+                        oklm += 1
 
-        y1 = 0
-        x1 = 0
-
-        while x1*y1 != 50:
-            try:
-                possible = select_moves((my_board[x1][y1]), (x1, y1), moves)
-                for positions in possible:
-                    row, col = positions
-                    new_board = copy.deepcopy(my_board)
-                    new_board[row][col] = new_board[x1][y1]
-                    new_board[x1][y1] = '  '
-                    deselect()
-                    tab = [[convert_to_ai(new_board)], [x1, y1, row, col]]
-                    possibility_table.append(tab)
-                y1, x1 = up(y1, x1)
-            except:
-                piece_to_move = []
-                y1, x1 = up(y1, x1)
+                    for y2 in range(8):
+                        for x2 in range(8):
+                            # print(x1, y1, x2, y2)
+                            # my_board2 = copy.deepcopy(my_board)
+                            try:
+                                if my_board[x2][y2].killable:
+                                    print(x1, y1, x2, y2)
+                                    row, col = piece_to_move
+                                    my_board[row][col] = '  '
+                                    my_deselect(my_board)
+                                    tab = copy.deepcopy([[convert_to_ai(my_board)], [col, row, y2, x2]])
+                                    print(col, row, y2, x2)
+                                    possibility_table.append(tab)
+                                else:
+                                    my_deselect(my_board)
+                            except:
+                                if my_board[x2][y2] == 'x ':
+                                    print(x1, y1, x2, y2)
+                                    row, col = piece_to_move
+                                    my_board[row][col] = '  '
+                                    my_deselect(my_board)
+                                    tab = copy.deepcopy([[convert_to_ai(my_board)], [col, row, y2, x2]])
+                                    print(col, row, y2, x2)
+                                    possibility_table.append(tab)
+                                else:
+                                    my_deselect(my_board)
+                except:
+                    piece_to_move = []
+        print(len(possibility_table), " possibility")
         return possibility_table
 
     def main(WIDTH, w_network):
@@ -461,8 +472,8 @@ def play(network):
                         # [score returned by forward_propagation, coordinate to this move] append to score_list
                         for i in range(len(possibility)):
                             # print(possibility[i][0][0])
-                            score_tab = [select_phase(possibility[i][0][0], w_network[0]), possibility[i][1]]
-                            score_list.append(score_tab)
+                            score_tab = copy.deepcopy([select_phase(possibility[i][0][0], w_network[0]), possibility[i][1]])
+                            score_list.append(copy.deepcopy(score_tab))
 
                         # in best_score the best score and in score_index the index to get his score_list
                         best_score = 0
@@ -474,7 +485,7 @@ def play(network):
                                 best_score = sl
                                 score_index = i
                         print(score_list[score_index][1])
-                        x, y, x_next, y_next = score_list[score_index][1]
+                        y, x, y_next, x_next = score_list[score_index][1]
                         if moves % 2 == 0:
                             print(convert_to_readable(board))
                     else:

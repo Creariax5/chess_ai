@@ -35,7 +35,7 @@ def init(ent, dep, out):
 
 
 def forward_propagation(input_table, network):
-    print("input_table: ", input_table)
+    # print("input_table: ", input_table)
     def sig(x):
         return 1 / (1 + np.exp(-x))
 
@@ -72,7 +72,7 @@ def forward_propagation(input_table, network):
         network[6][i] = sig(tmp)
 
     output_table = network[6]
-    print(output_table)
+    # print(output_table)
 
     return copy.deepcopy(output_table)
 
