@@ -3,7 +3,7 @@ import time
 from ai import select_phase, move_phase, select_rnd, move_rnd
 
 
-def play(network):
+def play(w_network, b_network):
     time.sleep(0)
 
     class Piece:
@@ -182,7 +182,6 @@ def play(network):
 
         return copy.deepcopy(output)
 
-
     def my_deselect(my_board):
         for row in range(len(my_board)):
             for column in range(len(my_board[0])):
@@ -194,7 +193,6 @@ def play(network):
                     except:
                         pass
         return convert_to_readable(my_board)
-
 
     def deselect():
         for row in range(len(board)):
@@ -382,21 +380,6 @@ def play(network):
                     grid[i][j].colour = GREY
         return grid
 
-    def Find_Node(pos, WIDTH):
-        interval = WIDTH / 8
-        y, x = pos
-        rows = y // interval
-        columns = x // interval
-        return int(rows), int(columns)
-
-    def display_potential_moves(positions, grid):
-        for i in positions:
-            x, y = i
-            grid[x][y].colour = BLUE
-            """
-            Displays all the potential moves
-            """
-
     def Do_Move(OriginalPos, FinalPosition):
         starting_order[FinalPosition] = starting_order[OriginalPos]
         starting_order[OriginalPos] = None
@@ -419,13 +402,12 @@ def play(network):
                 x += 1
             return y, x
 
-        piece_to_move = []
         possibility_table = []
 
         y1 = 0
         x1 = 0
 
-        while x1*y1 != 50:
+        while x1 * y1 != 50:
             try:
                 possible = select_moves((my_board[x1][y1]), (x1, y1), moves)
                 for positions in possible:
@@ -438,137 +420,111 @@ def play(network):
                     possibility_table.append(tab)
                 y1, x1 = up(y1, x1)
             except:
-                piece_to_move = []
                 y1, x1 = up(y1, x1)
         return possibility_table
 
-    def main(WIDTH, w_network):
-        ai = True
+    def main(WIDTH, w_network, b_network):
         moves = 0
         selected = False
         piece_to_move = []
         grid = make_grid(8, WIDTH)
-        io = 1
-        while io != 40:
-            if ai:
-                io += 1
-                if not selected:
-                    if moves % 2 == 0:
-                        # all the possibility for 1 move in possibility
-                        possibility = test_possibility(2, board)
-                        score_list = []
+        win = 0
+        while win == 0:
+            if not selected:
+                if moves % 2 == 0:
+                    # all the possibility for 1 move in possibility
+                    possibility = test_possibility(2, board)
+                    score_list = []
 
-                        # [score returned by forward_propagation, coordinate to this move] append to score_list
-                        for i in range(len(possibility)):
-                            # print(possibility[i][0][0])
-                            score_tab = [select_phase(possibility[i][0][0], w_network[0]), possibility[i][1]]
-                            score_list.append(score_tab)
+                    # [score returned by forward_propagation, coordinate to this move] append to score_list
+                    for i in range(len(possibility)):
+                        score_tab = [select_phase(possibility[i][0][0], w_network), possibility[i][1]]
+                        score_list.append(score_tab)
 
-                        # in best_score the best score and in score_index the index to get his score_list
-                        best_score = 0
-                        score_index = 0
-                        for i in range(len(score_list)):
-                            sl = score_list[i][0][0]
-                            # print(sl, best_score)
-                            if sl > best_score:
-                                best_score = sl
-                                score_index = i
-                        # print(score_list[score_index][1])
-                        x, y, x_next, y_next = score_list[score_index][1]
-                    else:
-                        y, x = select_rnd()
-                    try:
-                        possible = select_moves((board[x][y]), (x, y), moves)
-                        for positions in possible:
-                            row, col = positions
-                            grid[row][col].colour = BLUE
-                        piece_to_move = x, y
-                        selected = True
-                        if moves % 2 == 0:
-                            w_network[1] += 3
-                            # print("selected")
-                        # else:
-                        # b_network[1] += 3
-                    except:
-                        piece_to_move = []
-                        if moves % 2 == 0:
-                            w_network[1] -= 1
-                            print('Can\'t select')
-                        # else:
-                        # b_network[1] += -1
+                    # in best_score the best score and in score_index the index to get his score_list
+                    best_score = 0
+                    score_index = 0
+                    for i in range(len(score_list)):
+                        sl = score_list[i][0][0]
+                        if sl > best_score:
+                            best_score = sl
+                            score_index = i
+                    x, y, x_next, y_next = score_list[score_index][1]
                 else:
-                    if moves % 2 == 0:
-                        # y, x = 3, 5
-                        y, x = y_next, x_next
+                    y, x = select_rnd()
+                try:
+                    possible = select_moves((board[x][y]), (x, y), moves)
+                    for positions in possible:
+                        row, col = positions
+                        grid[row][col].colour = BLUE
+                    piece_to_move = x, y
+                    selected = True
+                except:
+                    piece_to_move = []
+            else:
+                if moves % 2 == 0:
+                    y, x = y_next, x_next
+                else:
+                    y, x = move_rnd()
+                try:
+                    if board[x][y].killable:
+                        row, col = piece_to_move
+                        if moves % 2 == 0:
+                            try:
+                                if board[x][y].nb == 9:
+                                    win = 1
+                                    print("WHITE win in ", moves, " moves")
+                            except:
+                                pass
+                        if moves % 2 != 0:
+                            try:
+                                if board[x][y].nb == 10:
+                                    win = 2
+                                    print("BLACK win in ", moves, " moves")
+                            except:
+                                pass
+                        board[x][y] = board[row][col]
+                        board[row][col] = '  '
+                        deselect()
+                        remove_highlight(grid)
+                        Do_Move((col, row), (y, x))
+                        moves += 1
                     else:
-                        y, x = move_rnd()
-                        # print("rnd")
-                    try:
-                        if board[x][y].killable:
-                            row, col = piece_to_move  # coords of original piece
-                            board[x][y] = board[row][col]
-                            board[row][col] = '  '
-                            deselect()
-                            remove_highlight(grid)
-                            Do_Move((col, row), (y, x))
-                            if moves % 2 == 0:
-                                w_network[1] += 12
-                                # print("moved")
-                            moves += 1
-                            # else:
-                            # b_network[1] += 12
-                            # if moves % 2 == 0:
-                                # print(convert_to_readable(board))
-                        else:
-                            deselect()
-                            remove_highlight(grid)
-                            selected = False
-                            if moves % 2 == 0:
-                                w_network[1] -= 2
-                                print("Deselected")
-                            # else:
-                            # b_network[1] += -2
-                    except:
-                        if board[x][y] == 'x ':
-                            row, col = piece_to_move
-                            board[x][y] = board[row][col]
-                            board[row][col] = '  '
-                            deselect()
-                            remove_highlight(grid)
-                            Do_Move((col, row), (y, x))
-                            if moves % 2 == 0:
-                                w_network[1] += 12
-                                # print("moved")
-                            moves += 1
-                            # else:
-                            # b_network[1] += 12
-                        else:
-                            deselect()
-                            remove_highlight(grid)
-                            selected = False
-                            if moves % 2 == 0:
-                                w_network[1] -= 2
-                                print("Invalid move")
-                            # else:
-                            # b_network[1] += -2
-                    selected = False
-
-        return w_network
+                        deselect()
+                        remove_highlight(grid)
+                except:
+                    if board[x][y] == 'x ':
+                        row, col = piece_to_move
+                        if moves % 2 == 0:
+                            try:
+                                if board[x][y].nb == 9:
+                                    win = 1
+                                    print("WHITE win in ", moves, " moves")
+                            except:
+                                pass
+                        if moves % 2 != 0:
+                            try:
+                                if board[x][y].nb == 10:
+                                    win = 2
+                                    print("BLACK win in ", moves, " moves")
+                            except:
+                                pass
+                        board[x][y] = board[row][col]
+                        board[row][col] = '  '
+                        deselect()
+                        remove_highlight(grid)
+                        Do_Move((col, row), (y, x))
+                        moves += 1
+                    else:
+                        deselect()
+                        remove_highlight(grid)
+                selected = False
+                if moves > 80:
+                    win = 3
+                    print("EQUALITY ", moves, " moves")
+        return w_network, b_network, win
 
     board = [['  ' for i in range(8)] for j in range(8)]
-
-    bp = Piece('b', 'p', 1, 'img/b_pawn.png')
-    wp = Piece('w', 'p', 2, 'img/w_pawn.png')
-    bk = Piece('b', 'k', 3, 'img/b_queen.png')
-    wk = Piece('w', 'k', 4, 'img/w_queen.png')
-    br = Piece('b', 'r', 5, 'img/b_rook.png')
-    wr = Piece('w', 'r', 6, 'img/w_rook.png')
-    bb = Piece('b', 'b', 7, 'img/b_bishop.png')
-    wb = Piece('w', 'b', 8, 'img/w_bishop.png')
-    bq = Piece('b', 'q', 9, 'img/b_king.png')
-    wq = Piece('w', 'q', 10, 'img/w_king.png')
-    bkn = Piece('b', 'kn', 11, 'img/b_knight.png')
-    wkn = Piece('w', 'kn', 12, 'img/w_knight.png')
 
     starting_order = {(0, 0): "br", (1, 0): "bkn",
                       (2, 0): "bb", (3, 0): "bk",
@@ -601,10 +557,8 @@ def play(network):
 
     WHITE = (180, 165, 255)
     GREY = (45, 0, 180)
-    YELLOW = (180, 180, 0)
     BLUE = (150, 200, 200)
-    BLACK = (0, 0, 0)
 
     create_board(board)
 
-    return main(WIDTH, network)
+    return main(WIDTH, w_network, b_network)
